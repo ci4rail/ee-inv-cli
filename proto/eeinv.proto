@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: Apache-2.0
+// SPDX-FileCopyrightText: (c) 2025 Ci4Rail GmbH
+
+syntax = "proto3";
+
+package eeinv;
+option go_package = "./eeinv";
+
+message Inventory {
+  string article = 1;           // e.g. S101-CPU01-00001
+  uint32 major_version = 2;     // e.g. 0
+  string serial = 3;            // typically UUID
+}
