@@ -8,7 +8,7 @@ import (
 )
 
 type EEPROMFile struct {
-	file   os.File
+	file   *os.File
 	offset int64
 	size   int64
 }
@@ -22,13 +22,13 @@ func NewEEPROMFile(spec string) (*EEPROMFile, error) {
 	if err != nil {
 		return nil, err
 	}
-	file, err := os.Open(filePath)
+	file, err := os.OpenFile(filePath, os.O_RDWR, 0)
 	if err != nil {
 		return nil, err
 	}
 
 	return &EEPROMFile{
-		file:   *file,
+		file:   file,
 		offset: offset,
 		size:   size,
 	}, nil
@@ -79,8 +79,8 @@ func (e *EEPROMFile) Write(data []byte) error {
 	if err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
-	if int64(nWritten) != e.size {
-		return fmt.Errorf("written %d bytes, expected %d bytes", nWritten, e.size)
+	if nWritten != len(data) {
+		return fmt.Errorf("written %d bytes, expected %d bytes", nWritten, len(data))
 	}
 	return nil
 }

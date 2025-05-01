@@ -32,8 +32,7 @@ func WriteInventoryToFile(filePathSpec string, inventory *eeinv.Inventory, priva
 		return err
 	}
 	// Write the marshaled data to the EEPROM file
-	eepromFile.Write(marshaledData)
-	return nil
+	return eepromFile.Write(marshaledData)
 }
 
 func ReadInventoryFromFile(filePathSpec string, publicKey ed25519.PublicKey) (*eeinv.Inventory, error) {

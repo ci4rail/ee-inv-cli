@@ -70,7 +70,10 @@ func Unmarshal(data []byte) (*Content, error) {
 	if err := binary.Read(buf, endianess, &content.Signature); err != nil {
 		return nil, fmt.Errorf("failed to read signature: %v", err)
 	}
-	content.Payload = buf.Bytes()
+	content.Payload = make([]byte, content.Len)
+	if err := binary.Read(buf, endianess, &content.Payload); err != nil {
+		return nil, fmt.Errorf("failed to read payload: %v", err)
+	}
 
 	if len(content.Payload) != int(content.Len) {
 		return nil, fmt.Errorf("payload length mismatch: expected %d, got %d", content.Len, len(content.Payload))

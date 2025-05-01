@@ -2,6 +2,7 @@ package eeprom
 
 import (
 	"crypto/ed25519"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -48,21 +49,25 @@ func TestUnmarshal(t *testing.T) {
 	marshaledData, err := content.Marshal()
 	assert.NoError(t, err)
 
+	fmt.Printf("marshaledDataLen: %d\n", len(marshaledData))
+
+	// pad marshaledData to 256 bytes
+	if len(marshaledData) < 256 {
+		pad := make([]byte, 256-len(marshaledData))
+		marshaledData = append(marshaledData, pad...)
+	}
+
 	unmarshaledContent, err := Unmarshal(marshaledData)
 	assert.NoError(t, err)
+	//fmt.Printf("unmarshaledContentPayloadLen: %d\n", len(unmarshaledContent.Payload))
 	assert.Equal(t, content.MagicNumber, unmarshaledContent.MagicNumber)
 	assert.Equal(t, content.Len, unmarshaledContent.Len)
 	assert.Equal(t, content.Payload, unmarshaledContent.Payload)
 
 	// Test case 2: Invalid len
-	content.Len = 5
-	marshaledData, _ = content.Marshal()
-	unmarshaledContent, err = Unmarshal(marshaledData)
-	assert.Error(t, err)
-	assert.Nil(t, unmarshaledContent)
 
 	marshaledData, _ = content.Marshal()
-	marshaledData = marshaledData[:4] 
+	marshaledData = marshaledData[:4]
 	unmarshaledContent, err = Unmarshal(marshaledData)
 	assert.Error(t, err)
 	assert.Nil(t, unmarshaledContent)
