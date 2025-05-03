@@ -4,10 +4,12 @@
 syntax = "proto3";
 
 package eeinv;
-option go_package = "./eeinv";
+option go_package = "./eeinvpb";
 
 message Inventory {
-  string article = 1;           // e.g. S101-CPU01-00001
-  uint32 major_version = 2;     // e.g. 0
-  string serial = 3;            // typically UUID
+  string vendor = 1;          // e.g. Ci4Rail
+  string model = 2;           // e.g. S100-MEC01
+  uint32 variant = 3;         // variant of the model e.g. 25 
+  uint32 major_version = 4;   // e.g. 0
+  string serial = 5;          // typically UUID
 }

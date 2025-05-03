@@ -7,7 +7,7 @@
 // 	protoc        v4.24.0--rc2
 // source: eeinv.proto
 
-package eeinv
+package eeinvpb
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -26,9 +26,11 @@ const (
 
 type Inventory struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Article       string                 `protobuf:"bytes,1,opt,name=article,proto3" json:"article,omitempty"`                                // e.g. S101-CPU01-00001
-	MajorVersion  uint32                 `protobuf:"varint,2,opt,name=major_version,json=majorVersion,proto3" json:"major_version,omitempty"` // e.g. 0
-	Serial        string                 `protobuf:"bytes,3,opt,name=serial,proto3" json:"serial,omitempty"`                                  // typically UUID
+	Vendor        string                 `protobuf:"bytes,1,opt,name=vendor,proto3" json:"vendor,omitempty"`                                  // e.g. Ci4Rail
+	Model         string                 `protobuf:"bytes,2,opt,name=model,proto3" json:"model,omitempty"`                                    // e.g. S100-MEC01
+	Variant       uint32                 `protobuf:"varint,3,opt,name=variant,proto3" json:"variant,omitempty"`                               // variant of the model e.g. 25
+	MajorVersion  uint32                 `protobuf:"varint,4,opt,name=major_version,json=majorVersion,proto3" json:"major_version,omitempty"` // e.g. 0
+	Serial        string                 `protobuf:"bytes,5,opt,name=serial,proto3" json:"serial,omitempty"`                                  // typically UUID
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,11 +65,25 @@ func (*Inventory) Descriptor() ([]byte, []int) {
 	return file_eeinv_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Inventory) GetArticle() string {
+func (x *Inventory) GetVendor() string {
 	if x != nil {
-		return x.Article
+		return x.Vendor
 	}
 	return ""
+}
+
+func (x *Inventory) GetModel() string {
+	if x != nil {
+		return x.Model
+	}
+	return ""
+}
+
+func (x *Inventory) GetVariant() uint32 {
+	if x != nil {
+		return x.Variant
+	}
+	return 0
 }
 
 func (x *Inventory) GetMajorVersion() uint32 {
@@ -88,11 +104,13 @@ var File_eeinv_proto protoreflect.FileDescriptor
 
 const file_eeinv_proto_rawDesc = "" +
 	"\n" +
-	"\veeinv.proto\x12\x05eeinv\"b\n" +
-	"\tInventory\x12\x18\n" +
-	"\aarticle\x18\x01 \x01(\tR\aarticle\x12#\n" +
-	"\rmajor_version\x18\x02 \x01(\rR\fmajorVersion\x12\x16\n" +
-	"\x06serial\x18\x03 \x01(\tR\x06serialB\tZ\a./eeinvb\x06proto3"
+	"\veeinv.proto\x12\x05eeinv\"\x90\x01\n" +
+	"\tInventory\x12\x16\n" +
+	"\x06vendor\x18\x01 \x01(\tR\x06vendor\x12\x14\n" +
+	"\x05model\x18\x02 \x01(\tR\x05model\x12\x18\n" +
+	"\avariant\x18\x03 \x01(\rR\avariant\x12#\n" +
+	"\rmajor_version\x18\x04 \x01(\rR\fmajorVersion\x12\x16\n" +
+	"\x06serial\x18\x05 \x01(\tR\x06serialB\vZ\t./eeinvpbb\x06proto3"
 
 var (
 	file_eeinv_proto_rawDescOnce sync.Once

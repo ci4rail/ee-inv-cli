@@ -4,11 +4,11 @@ import (
 	"crypto/ed25519"
 	"fmt"
 
-	"github.com/ci4rail/ee-inv-cli/pkg/eeinv"
+	"github.com/ci4rail/ee-inv-cli/pkg/eeinvpb"
 	"google.golang.org/protobuf/proto"
 )
 
-func WriteInventoryToFile(filePathSpec string, inventory *eeinv.Inventory, privateKey ed25519.PrivateKey) error {
+func WriteInventoryToFile(filePathSpec string, inventory *eeinvpb.Inventory, privateKey ed25519.PrivateKey) error {
 	// Create a new EEPROM file
 	eepromFile, err := NewEEPROMFile(filePathSpec)
 	if err != nil {
@@ -35,7 +35,7 @@ func WriteInventoryToFile(filePathSpec string, inventory *eeinv.Inventory, priva
 	return eepromFile.Write(marshaledData)
 }
 
-func ReadInventoryFromFile(filePathSpec string, publicKey ed25519.PublicKey) (*eeinv.Inventory, error) {
+func ReadInventoryFromFile(filePathSpec string, publicKey ed25519.PublicKey) (*eeinvpb.Inventory, error) {
 	// Create a new EEPROM file
 	eepromFile, err := NewEEPROMFile(filePathSpec)
 	if err != nil {
@@ -61,7 +61,7 @@ func ReadInventoryFromFile(filePathSpec string, publicKey ed25519.PublicKey) (*e
 	}
 
 	// Unmarshal the payload into an Inventory instance
-	inventory := &eeinv.Inventory{}
+	inventory := &eeinvpb.Inventory{}
 	err = proto.Unmarshal(content.Payload, inventory)
 	if err != nil {
 		return nil, err
