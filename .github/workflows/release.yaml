@@ -4,7 +4,7 @@ on:
 
 jobs:
   releases-matrix:
-    name: Release examples Go Binaries
+    name: Release Go Binaries
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,8 +15,8 @@ jobs:
           - ee-inv
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build example
+        uses: actions/checkout@v4
+      - name: Build 
         uses: wangyoucao577/go-release-action@v1.22
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
